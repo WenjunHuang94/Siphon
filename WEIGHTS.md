@@ -6,7 +6,7 @@ Only `stage2-final-0225/checkpoints-10000` is selected for this release. Its ten
 0ed9694868d2552d243140caf242ef38e0d69f6673a3eec36e4ddc53ed459535
 ```
 
-The adapter is about 180 MiB. GitHub hosts the code and small demonstrations; the intended model host is Hugging Face. A public Hub download is pending until the model owner's Hub account is authenticated and the weight license is selected. There is no public model URL to substitute yet.
+The adapter is about 180 MiB. GitHub hosts the code and small demonstrations; the intended model host is Hugging Face. The model owner has selected Apache-2.0 for these weights and `huangwenjun1994/Siphon-LongCat-LoRA` as the target repository. Public upload is pending Hub authentication; this repository ID is not yet an available download.
 
 ## Prepare the minimal package
 
@@ -26,15 +26,15 @@ The second command prepares a local draft package only; it does not create a rem
 
 ## Upload to your account
 
-Authenticate in your own terminal using `hf auth login`. Do not paste a token into chat or put one in the repository. Choose the model-weight license explicitly; the following example chooses Apache-2.0, which is not inferred automatically from the code license:
+Authenticate in your own terminal using `hf auth login`. Do not paste a token into chat or put one in the repository. The following command uses the model owner's selected account and Apache-2.0 weight license:
 
 ```bash
 python tools/upload_adapter.py \
   --checkpoint /path/to/checkpoints-10000 \
-  --repo-id YOUR_HF_ACCOUNT/Siphon-LongCat-LoRA \
+  --repo-id huangwenjun1994/Siphon-LongCat-LoRA \
   --license apache-2.0 \
   --stage-dir outputs/hub-adapter-publish \
   --upload
 ```
 
-Replace `YOUR_HF_ACCOUNT` with the authenticated account or an authorized organization. `--upload` is the only mode that contacts the Hub, creates the model repository if necessary, and uploads the allowlisted adapter files. After upload, put the verified model URL in the main README and check inference with that repository ID.
+For a separate release, use your own authenticated account or an authorized organization. `--upload` is the only mode that contacts the Hub, creates the model repository if necessary, and uploads the allowlisted adapter files. After upload, put the verified model URL in the main README and check inference with that repository ID.
