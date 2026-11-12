@@ -1,0 +1,3 @@
+# The single-GPU reference trainer uses the same dependencies as inference.
+# No external planner, DeepSpeed, or W&B is required.
+-e .

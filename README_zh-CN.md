@@ -21,11 +21,13 @@ Siphon 让编辑模型直接读取画在图像中的简短文字、箭头和框�
 - [x] 论文和论文项目主页
 - [x] 基于 LongCat-Image-Edit 的推理入口
 - [x] 四类视觉指令各两组，共八组精选输入/输出示例
+- [x] 单卡配对数据 LoRA 训练参考实现与两阶段配置
 - [ ] Siphon LoRA 权重的公开下载
-- [ ] 可移植的训练代码和配置
 - [ ] 数据集和完整数据合成流程
 
-当前代码初版已整理推理和演示样例。运行 Siphon 仍需已有的本地 PEFT adapter，或可访问的 Hugging Face adapter 仓库；本仓库尚未提供公开权重下载地址。基座模型直接生成的结果应标为 LongCat baseline，不能称为 Siphon 结果。
+当前版本包含推理、演示样例和配对数据训练参考实现。选定的发布权重是生成示例图的 `10000` checkpoint；其 Hugging Face 公开下载仍待完成，目前需要已有的本地 PEFT adapter，或可访问的 adapter 仓库。基座模型直接生成的结果应标为 LongCat baseline，不能称为 Siphon 结果。
+
+最小权重包导出及 Hub 上传工具见 [WEIGHTS.md](WEIGHTS.md)，checkpoint 身份与已观察到的限制见 [10000 模型卡](model_cards/longcat-10000.md)。
 
 ### 安装与单图推理
 
@@ -88,6 +90,18 @@ python -m siphon.inference \
 
 加 `--dry-run` 可在加载模型前检查任务列表；需要替换已有输出时加 `--overwrite`。安装后的 `siphon-infer` 命令与 `python -m siphon.inference` 等价。`--base-only` 明确运行不加载 adapter 的 LongCat baseline。完整参数见 `python -m siphon.inference --help`。
 
+### 训练
+
+[中文训练说明](TRAINING_zh-CN.md) 与 [English](TRAINING.md) 包含配对数据格式、冻结编码器/VAE 预缓存、两阶段配置、权重初始化、完整断点恢复及导出推理的方法。
+
+```bash
+python -m siphon.prepare_training_data --manifest data/stage1.jsonl \
+  --revision 7b54ef423aa7854be7861600024be5c56ab7875a --cache-dir caches/stage1
+python -m siphon.train --config configs/stage1.json
+```
+
+先准备自己的配对训练数据；`training/examples/` 的极小清单只用于跑通流程。训练说明区分了历史 `10000` adapter 和新的可移植缓存实现，不将后者宣传为论文全部结果的精确复现。完整 teacher 数据合成流程和原训练数据集仍未发布。
+
 ### 示例效果与范围
 
 ![四类视觉指令各两例的已生成结果](assets/examples_overview.jpg)
@@ -102,7 +116,7 @@ python -m siphon.inference \
 
 ### 验证
 
-CPU 检查命令为 `python -m unittest discover -s tests -v`。新推理入口已完成一次 A100 上的 50 步实机测试；环境、结果和验证范围见 [验证记录](VALIDATION.md)。
+CPU 检查命令为 `python -m unittest discover -s tests -v`。新推理入口已完成一次 A100 上的 50 步实机测试，训练参考实现也已跑通短程缓存、训练、断点恢复和导出后推理；环境、结果和验证范围见 [验证记录](VALIDATION.md)。
 
 ### 引用
 

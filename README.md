@@ -27,11 +27,13 @@ The project page includes interactive input/output comparisons and the original 
 - [x] Camera-ready paper and paper project website
 - [x] LongCat-based inference entry point
 - [x] Eight curated input/output examples covering four instruction types
+- [x] Single-GPU paired-data LoRA training reference and two-stage configurations
 - [ ] Public Siphon LoRA checkpoint download
-- [ ] Portable training code and configurations
 - [ ] Dataset and complete data synthesis pipeline
 
-The inference code and examples are organized for this initial code release. Running Siphon currently requires an existing local PEFT adapter directory or an accessible Hugging Face adapter repository. A public Siphon checkpoint download has not been published; do not substitute the base editor for the adapted model when reporting Siphon results.
+This release includes inference, recorded examples, and a paired-data training reference. The selected release adapter is the `10000` checkpoint used for the gallery. Its public Hugging Face download is pending; for now supply an existing local PEFT adapter directory or an accessible adapter repository. Do not substitute the base editor for the adapted model when reporting Siphon results.
+
+See [WEIGHTS.md](WEIGHTS.md) for the minimal adapter export and authenticated Hub upload tool, and the [10000 model card](model_cards/longcat-10000.md) for the checkpoint identity and observed limitations.
 
 ### Inference
 
@@ -86,6 +88,18 @@ To select the recorded base snapshot on Hugging Face, add `--revision 7b54ef423a
 
 Use `--dry-run` to inspect the selected jobs before model loading, and `--overwrite` when intentionally replacing existing generated outputs. `siphon-infer` is the installed console equivalent of `python -m siphon.inference`. `--base-only` runs a LongCat baseline without an adapter; those outputs are not Siphon results. See `python -m siphon.inference --help` for all options.
 
+### Training
+
+See [TRAINING.md](TRAINING.md) or [中文训练说明](TRAINING_zh-CN.md) for paired-data manifests, frozen encoder/VAE caching, Stage 1 and Stage 2 configurations, adapter initialization, full-state resume, and export back to inference.
+
+```bash
+python -m siphon.prepare_training_data --manifest data/stage1.jsonl \
+  --revision 7b54ef423aa7854be7861600024be5c56ab7875a --cache-dir caches/stage1
+python -m siphon.train --config configs/stage1.json
+```
+
+Prepare your own paired training data first. The tiny manifests in `training/examples/` only exercise the pipeline. The historical `10000` adapter and the portable cached-data reference are distinguished in the training notes; this is not a claim of exact reproduction of every paper result. Full teacher-driven data synthesis and the original training dataset remain outside this release.
+
 ### Recorded examples
 
 [中文说明](README_zh-CN.md) · [Example details and limitations](examples/README.md) · [Example manifest](examples/examples.json)
@@ -98,7 +112,7 @@ The saved pairs in `examples/` were generated for this code-release preparation.
 
 ### Validation
 
-Run the CPU checks with `python -m unittest discover -s tests -v`. The CLI also completed a real 50-step A100 inference check; see [the validation record](VALIDATION.md) for the environment, result, and test scope.
+Run the CPU checks with `python -m unittest discover -s tests -v`. The CLI completed a real 50-step A100 inference check, and the training reference completed a short cache/train/resume/inference check; see [the validation record](VALIDATION.md) for the environment, results, and test scope.
 
 ### Code and asset attribution
 

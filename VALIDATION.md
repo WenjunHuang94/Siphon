@@ -1,11 +1,12 @@
-# Validation of the initial LongCat inference release
+# Validation of the LongCat inference and training release
 
 Checks performed on 2026-11-12:
 
-- 19 standard-library CPU unit tests passed: CLI planning, task prompts, explicit adapter selection, manifest paths, output/reference protection, base revision forwarding, failure reporting, asset hashes/dimensions, and local documentation links.
+- 52 CPU unit tests passed with the installed ML stack: inference planning, task prompts, adapter selection, manifest paths, output protection, asset integrity, training-data caching, training configuration and resume checks, offline adapter saving, export allowlists, and local documentation links. Without PyTorch/PEFT, the two integration tests for adapter saving are skipped; the other checks use the standard library.
 - The package built and installed successfully, including the `siphon-infer` console entry point.
 - All eight selected examples passed dry-run validation without importing model dependencies.
 - A real CUDA run through the refactored CLI completed the `box_double_bass` case with the same research adapter used for the recorded gallery.
+- A one-pair CUDA cache/train/resume/inference check completed through the new training reference. This checks the implementation, not the historical training run or paper reproduction.
 
 ## GPU check
 
@@ -16,6 +17,17 @@ The output was a valid 1040 × 1024 PNG. Visual inspection confirmed a double ba
 Runtime versions were PyTorch `2.6.0+cu124`, Diffusers `0.39.0.dev0` at commit `e39aecff57ed14d1018529c3de6ec3c34fadb559`, Transformers `4.51.3`, PEFT `0.17.1`, Accelerate `1.14.0`, and Pillow `12.3.0`. The test used an isolated project environment together with the server's preinstalled CUDA/PyTorch stack. A full installation from an empty machine was not tested.
 
 The CLI implementation SHA256 at the time of this check was `2c8079e83b6c9d1d78324f614651ff69d818e98d2793201c27466549edc059e6`.
+
+## Training pipeline check
+
+On the same A100 and software stack:
+
+1. Cached one 512 × 512 pair from `training/examples/stage1.jsonl` with the frozen encoder and VAE, without loading the diffusion transformer. This took approximately 19.7 seconds. Target and reference latents had shape `[16, 64, 64]`; positive and empty-text embeddings each had shape `[838, 3584]`.
+2. Loaded the base transformer with the selected `10000` adapter and ran two optimizer updates with batch size 1 and gradient accumulation 1. All 94,371,840 LoRA parameters were trainable. The observed losses were approximately 0.464 and 0.363. Both updates exported standard PEFT adapters and separate private training states; the update loop took approximately 8.1 seconds.
+3. Resumed from the first checkpoint, including optimizer, scheduler, random states, and data cursor, and completed the second update. The reported final loss matched the continuous run. This checks resume continuity; GPU kernels did not produce bit-identical exported weights.
+4. Loaded the resumed adapter through `siphon.inference` and generated `box_double_bass` with 8 steps. It produced a valid 1040 × 1024 PNG with a double bass and removed the marks. Total runtime was approximately 50.5 seconds, including approximately 10.1 seconds for model loading. The short run was visibly less refined than the recorded 50-step example.
+
+These tiny runs use the release examples only to exercise the code. They do not train a new useful editor, validate generalization, or recreate the historical two-stage training. The original `10000` tensors were unchanged, and the smoke-test adapters are not part of the model release. The selected adapter was also exported to a minimal Hub package and checked against its recorded SHA256; no public Hub upload was performed without authentication.
 
 ## Repeat the checks
 

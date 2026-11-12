@@ -1,0 +1,8 @@
+{"input":"../../examples/inputs/text_rifle.png","target":"../../examples/outputs/text_rifle.png","task":"text_to_image"}
+{"input":"../../examples/inputs/text_botanical.png","target":"../../examples/outputs/text_botanical.png","task":"text_to_image"}
+{"input":"../../examples/inputs/text_bow_tie.png","target":"../../examples/outputs/text_bow_tie.png","task":"text_edit"}
+{"input":"../../examples/inputs/text_bananas.png","target":"../../examples/outputs/text_bananas.png","task":"text_edit"}
+{"input":"../../examples/inputs/arrow_pink_flower.png","target":"../../examples/outputs/arrow_pink_flower.png","task":"arrow_edit"}
+{"input":"../../examples/inputs/arrow_denim_shirt.png","target":"../../examples/outputs/arrow_denim_shirt.png","task":"arrow_edit"}
+{"input":"../../examples/inputs/box_double_bass.png","target":"../../examples/outputs/box_double_bass.png","task":"box_edit"}
+{"input":"../../examples/inputs/box_toy_car.png","target":"../../examples/outputs/box_toy_car.png","task":"box_edit"}

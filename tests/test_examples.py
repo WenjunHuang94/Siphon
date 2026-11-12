@@ -45,7 +45,11 @@ class RecordedExamplesTests(unittest.TestCase):
         self.assertTrue(all(case["observation"] for case in data["examples"]))
 
     def test_documentation_local_file_links_exist(self):
-        for relative in ("README.md", "README_zh-CN.md", "examples/README.md", "THIRD_PARTY_NOTICES.md"):
+        for relative in (
+            "README.md", "README_zh-CN.md", "examples/README.md",
+            "THIRD_PARTY_NOTICES.md", "TRAINING.md", "TRAINING_zh-CN.md",
+            "WEIGHTS.md", "model_cards/longcat-10000.md", "VALIDATION.md",
+        ):
             path = ROOT / relative
             text = path.read_text(encoding="utf-8")
             for target in re.findall(r"\]\(([^)]+)\)", text):

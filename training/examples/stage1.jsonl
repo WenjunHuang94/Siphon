@@ -1,0 +1,2 @@
+{"input":"../../examples/inputs/text_rifle.png","target":"../../examples/outputs/text_rifle.png","task":"text_to_image"}
+{"input":"../../examples/inputs/text_botanical.png","target":"../../examples/outputs/text_botanical.png","task":"text_to_image"}

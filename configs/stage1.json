@@ -1,0 +1,21 @@
+{
+  "base_model": "meituan-longcat/LongCat-Image-Edit",
+  "revision": "7b54ef423aa7854be7861600024be5c56ab7875a",
+  "cache_manifest": "../caches/stage1/manifest.jsonl",
+  "output_dir": "../outputs/training/stage1",
+  "seed": 43,
+  "resolution": 512,
+  "lora_rank": 64,
+  "lora_alpha": 8,
+  "learning_rate": 0.0002,
+  "batch_size": 1,
+  "gradient_accumulation_steps": 8,
+  "mixed_precision": "bf16",
+  "gradient_checkpointing": true,
+  "null_text_ratio": 0.1,
+  "max_train_steps": 2500,
+  "initial_step": 0,
+  "lr_warmup_steps": 100,
+  "checkpointing_steps": 200,
+  "weight_decay": 0.01
+}
