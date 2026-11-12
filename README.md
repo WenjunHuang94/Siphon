@@ -24,13 +24,85 @@ The project page includes interactive input/output comparisons and the original 
 
 ### Release status
 
-- [x] Camera-ready paper
-- [x] Paper project website and qualitative results
-- [ ] Training and inference code
-- [ ] Model checkpoints
-- [ ] Dataset and data synthesis pipeline
+- [x] Camera-ready paper and paper project website
+- [x] LongCat-based inference entry point
+- [x] Eight curated input/output examples covering four instruction types
+- [ ] Public Siphon LoRA checkpoint download
+- [ ] Portable training code and configurations
+- [ ] Dataset and complete data synthesis pipeline
 
-This initial release contains the paper and website. Research code will be added in a future update. Code licensing and dependency information will accompany that release.
+The inference code and examples are organized for this initial code release. Running Siphon currently requires an existing local PEFT adapter directory or an accessible Hugging Face adapter repository. A public Siphon checkpoint download has not been published; do not substitute the base editor for the adapted model when reporting Siphon results.
+
+### Inference
+
+Use Python 3.10 or 3.11 and a CUDA-capable GPU:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e .
+```
+
+The package pins the Diffusers implementation to a recorded Git commit. Its installation needs access to GitHub and the Python package index. Inference loads LongCat-Image-Edit and a standard PEFT adapter containing `adapter_config.json` and `adapter_model.safetensors`; an external planner, API key, and the original training repository are not required.
+
+Run one box-guided example with your adapter:
+
+```bash
+python -m siphon.inference \
+  --base-model meituan-longcat/LongCat-Image-Edit \
+  --lora /path/to/siphon-adapter \
+  --input examples/inputs/box_double_bass.png \
+  --task box_edit \
+  --output outputs/single_box_double_bass.png
+```
+
+The image already contains the box and the instruction. The task option supplies a generic instruction template; the case-specific edit is read from the image pixels.
+
+| Type | Input convention | `--task` |
+| --- | --- | --- |
+| I | Text rendered on a canvas, describing an image to generate | `text_to_image` |
+| II | An image with a rendered editing instruction | `text_edit` |
+| III | An image with an arrow and an editing instruction | `arrow_edit` |
+| IV | An image with a box and an editing instruction | `box_edit` |
+
+Run all eight examples, or select particular cases:
+
+```bash
+python -m siphon.inference \
+  --lora /path/to/siphon-adapter \
+  --examples examples/examples.json \
+  --output-dir outputs
+
+python -m siphon.inference \
+  --lora /path/to/siphon-adapter \
+  --examples examples/examples.json \
+  --case arrow_pink_flower --case box_double_bass \
+  --output-dir outputs
+```
+
+Defaults are 50 steps, guidance scale 4.5, seed 43, and model CPU offload. Allow roughly 22 GB of free GPU memory for an initial offloaded test; actual memory use depends on image size and the installed stack. With ample GPU memory, use `--offload none`. Paths or Hugging Face IDs are accepted for both `--base-model` and `--lora`; use local directories with `--local-files-only` for offline inference.
+
+To select the recorded base snapshot on Hugging Face, add `--revision 7b54ef423aa7854be7861600024be5c56ab7875a`. This selects the base-model revision, not the adapter revision.
+
+Use `--dry-run` to inspect the selected jobs before model loading, and `--overwrite` when intentionally replacing existing generated outputs. `siphon-infer` is the installed console equivalent of `python -m siphon.inference`. `--base-only` runs a LongCat baseline without an adapter; those outputs are not Siphon results. See `python -m siphon.inference --help` for all options.
+
+### Recorded examples
+
+[中文说明](README_zh-CN.md) · [Example details and limitations](examples/README.md) · [Example manifest](examples/examples.json)
+
+![Eight recorded examples: two for each instruction type](assets/examples_overview.jpg)
+
+These are selected research demonstrations generated with LongCat-Image-Edit plus a Siphon LoRA, not a benchmark success-rate estimate. They include imperfect instruction following and changes outside the intended region. For example, other flowers also become pink in the arrow example, and faces or background textures can be redrawn. Type I examples omit some requested fine details or text. The manifest records the actual settings, asset hashes, provenance, and per-example observations; rerunning on a different software stack may not reproduce the exact saved pixels.
+
+The saved pairs in `examples/` were generated for this code-release preparation. The original paper figures and website comparisons remain separately under `docs/`.
+
+### Validation
+
+Run the CPU checks with `python -m unittest discover -s tests -v`. The CLI also completed a real 50-step A100 inference check; see [the validation record](VALIDATION.md) for the environment, result, and test scope.
+
+### Code and asset attribution
+
+Code is provided under [Apache License 2.0](LICENSE). The paper, paper figures, example images, and model weights are not automatically included in that code license. See [third-party notices](THIRD_PARTY_NOTICES.md) and the [example provenance notes](examples/README.md#provenance) for the recorded sources and the current gaps in image-source attribution.
 
 ### Citation
 

@@ -1,0 +1,2 @@
+# Canonical dependency definitions are in pyproject.toml.
+-e .

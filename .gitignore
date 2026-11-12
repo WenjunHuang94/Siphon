@@ -4,3 +4,24 @@ __pycache__/
 .env
 .env.*
 *.log
+
+# Local environments, build products, inference outputs, and model weights.
+/.venv/
+/venv/
+/build/
+/dist/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+/outputs/
+/weights/
+/checkpoints/
+/.local/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.zip
+*.tar
+*.tar.gz

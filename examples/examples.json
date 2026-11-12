@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "description": "Recorded LongCat Siphon demonstrations, selected for inspection rather than benchmark evaluation.",
+  "defaults": {
+    "seed": 43,
+    "steps": 50,
+    "guidance_scale": 4.5
+  },
+  "provenance": {
+    "base_model": "meituan-longcat/LongCat-Image-Edit",
+    "base_revision": "7b54ef423aa7854be7861600024be5c56ab7875a",
+    "adapter": {
+      "name": "stage2-final-0225/checkpoints-10000",
+      "sha256": "0ed9694868d2552d243140caf242ef38e0d69f6673a3eec36e4ddc53ed459535",
+      "availability": "Not yet publicly published; supply your own copy of this PEFT adapter."
+    },
+    "diffusers_commit": "e39aecff57ed14d1018529c3de6ec3c34fadb559",
+    "recorded_environment": {
+      "torch": "2.6.0+cu124",
+      "diffusers": "0.39.0.dev0",
+      "transformers": "4.51.3",
+      "peft": "0.17.1",
+      "accelerate": "1.14.0",
+      "Pillow": "12.3.0",
+      "safetensors": "0.8.0",
+      "torchvision": "0.21.0+cu124",
+      "huggingface_hub": "0.34.4"
+    },
+    "preservation_note": "Output sizes can differ from input sizes because the pipeline selects an output size. Comparisons are resized previews; PNGs preserve the recorded resolutions.",
+    "asset_rights": "Research demonstration assets. Image/model rights are distinct from the source-code license; complete upstream image-source licenses have not been reconstructed."
+  },
+  "examples": [
+    {
+      "id": "text_rifle",
+      "type": "I",
+      "task": "text_to_image",
+      "input": "inputs/text_rifle.png",
+      "reference_output": "outputs/text_rifle.png",
+      "input_sha256": "c7a6f7b2e85996278f013cbf13ccbbd9e844af94348db912578546603dae8c5e",
+      "reference_output_sha256": "51b2336014668f5d08fae426f0012c3d4640c99d959f881043290fb2dc6f415d",
+      "input_size": [
+        512,
+        512
+      ],
+      "reference_output_size": [
+        1024,
+        1024
+      ],
+      "observation": "The rifle-on-blue-fabric scene is generated. Exact requested engraving and some muzzle details are not reproduced.",
+      "source": {
+        "recorded_run": "results_siphon_four_types_20261111_run2",
+        "original_file": "text-to-image-2M-export_4000/input/image_000000.JPEG",
+        "original_input_sha256": "9ea1b7a29f090aff8a0dd3ae4961e68b08212831ed89a6205e60f0221848ffb6"
+      },
+      "timing_seconds": 269.93,
+      "timing_includes_model_load": true
+    },
+    {
+      "id": "text_botanical",
+      "type": "I",
+      "task": "text_to_image",
+      "input": "inputs/text_botanical.png",
+      "reference_output": "outputs/text_botanical.png",
+      "input_sha256": "ecd16f4b4354526b0e400124e10fde9ceac49356ce9bfd399f83052303e93716",
+      "reference_output_sha256": "187395d07dd0e9f4071d919462ef20b9aac2a900e513787207219a3ab4b5839f",
+      "input_size": [
+        766,
+        521
+      ],
+      "reference_output_size": [
+        1248,
+        848
+      ],
+      "observation": "A framed botanical illustration is generated. Scientific labels and several flower/yellow-label details are missing.",
+      "source": {
+        "recorded_run": "results_siphon_four_types_20261111_run2",
+        "original_file": "type1/25.png",
+        "original_input_sha256": "ffcc3afba472f7a63e35206898216e1e816b7334b2ca23cbe7604eab2f196a73"
+      },
+      "timing_seconds": 97.29,
+      "timing_includes_model_load": false
+    },
+    {
+      "id": "text_bow_tie",
+      "type": "II",
+      "task": "text_edit",
+      "input": "inputs/text_bow_tie.png",
+      "reference_output": "outputs/text_bow_tie.png",
+      "input_sha256": "f5ea4168eeeef367232117f3f62bb94a390d0c3fd2f65edbb39d4a5eede151b8",
+      "reference_output_sha256": "80f385e6382f13c8fc6d5d6fa7828c076ae808bbcbdb378fe0ce0acba9bbc4cd",
+      "input_size": [
+        1179,
+        1101
+      ],
+      "reference_output_size": [
+        1072,
+        992
+      ],
+      "observation": "A dark red bow tie is added and the instruction text removed. Face, beard and clothing details are noticeably redrawn.",
+      "source": {
+        "recorded_run": "results_siphon_four_types_20261111_run2",
+        "original_file": "type1/7.png",
+        "original_input_sha256": "d992d053dcc5e73fe60246349f5b8f788d122d45d4e4d5b19fbc2dc2c96cb564"
+      },
+      "timing_seconds": 95,
+      "timing_includes_model_load": false
+    },
+    {
+      "id": "text_bananas",
+      "type": "II",
+      "task": "text_edit",
+      "input": "inputs/text_bananas.png",
+      "reference_output": "outputs/text_bananas.png",
+      "input_sha256": "f6dda7296c0237e11cd39be73f0c26f68098f1856a2caf6d33c736e1d902f94c",
+      "reference_output_sha256": "dc2bb42df1cddc9a2ee9cf270275824d987fd706ff8f4e2872f975a6b0aa01da",
+      "input_size": [
+        1218,
+        773
+      ],
+      "reference_output_size": [
+        1296,
+        816
+      ],
+      "observation": "The fruit is replaced by bananas and the instruction text removed. Banana scale and room/window/plant details change.",
+      "source": {
+        "recorded_run": "results_siphon_four_types_20261111_run2",
+        "original_file": "type1/27.png",
+        "original_input_sha256": "8e5249d5b53321df354c69b18233810b642ddb19be2f017d9d9a0370536f2100"
+      },
+      "timing_seconds": 94.97,
+      "timing_includes_model_load": false
+    },
+    {
+      "id": "arrow_pink_flower",
+      "type": "III",
+      "task": "arrow_edit",
+      "input": "inputs/arrow_pink_flower.png",
+      "reference_output": "outputs/arrow_pink_flower.png",
+      "input_sha256": "1f8b7c10163d71bb8ad27efa615dc107b19dda40b114e57f00fd1a31b018c167",
+      "reference_output_sha256": "bb8efbc4ddfb4b8d25e0b8206e65dbff3d4c2247465e64bfe16a1ca16caf243e",
+      "input_size": [
+        1061,
+        1044
+      ],
+      "reference_output_size": [
+        1040,
+        1024
+      ],
+      "observation": "The arrow-indicated purple flower cluster becomes pink and markings are removed. Other flowers also become pink; local preservation is imperfect.",
+      "source": {
+        "recorded_run": "results_arrow_search_20261112",
+        "original_file": "type1/11.png",
+        "original_input_sha256": "2bf975197e2b90b12c8f800ca8681dde425cab0f7d94558a4f958a8a524b8f3a"
+      },
+      "timing_seconds": 101.03,
+      "timing_includes_model_load": false
+    },
+    {
+      "id": "arrow_denim_shirt",
+      "type": "III",
+      "task": "arrow_edit",
+      "input": "inputs/arrow_denim_shirt.png",
+      "reference_output": "outputs/arrow_denim_shirt.png",
+      "input_sha256": "7d5a9e45dde6d18793ea9c57dcdc8ab1efa4b35c6f7f84ef22f648e1f2d25be8",
+      "reference_output_sha256": "592ce2dd841dd78c81a6ade68d16a2528020a38571106623882d6e35c2256cc5",
+      "input_size": [
+        1344,
+        768
+      ],
+      "reference_output_size": [
+        1360,
+        784
+      ],
+      "observation": "The red hoodie becomes a light-blue denim-style button-up shirt and markings are removed. The pose and office layout remain recognizable, with detail redraws.",
+      "source": {
+        "recorded_run": "results_arrow_search_20261112",
+        "original_file": "hwj_images/task_obj_swap_joint_mask_9812-1.png",
+        "original_input_sha256": "7d5a9e45dde6d18793ea9c57dcdc8ab1efa4b35c6f7f84ef22f648e1f2d25be8"
+      },
+      "timing_seconds": 96.82,
+      "timing_includes_model_load": false
+    },
+    {
+      "id": "box_double_bass",
+      "type": "IV",
+      "task": "box_edit",
+      "input": "inputs/box_double_bass.png",
+      "reference_output": "outputs/box_double_bass.png",
+      "input_sha256": "72f040735a23f472ca38b3fa713c0a3b13bb6327bd653344a561b176ce47a9b9",
+      "reference_output_sha256": "1448cbc5e69c64cab41bf1a35e0dd9019e7fff84d50c5d71fe3db51b2794c62c",
+      "input_size": [
+        1046,
+        1031
+      ],
+      "reference_output_size": [
+        1040,
+        1024
+      ],
+      "observation": "A double bass is added in the boxed kitchen region and markings are removed. The kitchen layout is preserved with local texture redraws.",
+      "source": {
+        "recorded_run": "results_siphon_four_types_20261111_run2",
+        "original_file": "type1/20.png",
+        "original_input_sha256": "29029f85063ab31a1c0171dd3d4ec4868e32844e5cbd9e69eb43a63adfd6ead7"
+      },
+      "timing_seconds": 93.89,
+      "timing_includes_model_load": false
+    },
+    {
+      "id": "box_toy_car",
+      "type": "IV",
+      "task": "box_edit",
+      "input": "inputs/box_toy_car.png",
+      "reference_output": "outputs/box_toy_car.png",
+      "input_sha256": "dc75dd67af43a0a338cd27ebaee8381df300bf46a7cf538cec5c7b148e7b5a1e",
+      "reference_output_sha256": "fe48bd037c8dd07b8464c158526c8867b457c2ac81c45f9fac3ec80fde3741d0",
+      "input_size": [
+        512,
+        512
+      ],
+      "reference_output_size": [
+        1024,
+        1024
+      ],
+      "observation": "A red-orange model convertible is added in the boxed region beside the elephant and markings are removed. The elephant/rainbow layout is preserved with texture redraws.",
+      "source": {
+        "recorded_run": "results_siphon_four_types_20261111_run2",
+        "original_file": "hwj_images/000001_00000303_textbox.png",
+        "original_input_sha256": "063957943e5cecb2a3775f7052beb965963f796680a879e7d5ce6c6033a3a090"
+      },
+      "timing_seconds": 93.83,
+      "timing_includes_model_load": false
+    }
+  ]
+}
