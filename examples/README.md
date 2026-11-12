@@ -34,11 +34,11 @@ The case-specific instruction is already rendered in the input image. These runs
 
 ### Reproduce a case
 
-Supply your adapter; the public checkpoint download is still pending:
+Use the released adapter from [Hugging Face](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA):
 
 ```bash
 python -m siphon.inference \
-  --lora /path/to/siphon-adapter \
+  --lora huangwenjun1994/Siphon-LongCat-LoRA \
   --examples examples/examples.json \
   --case box_double_bass \
   --output-dir outputs
@@ -60,4 +60,4 @@ The included arrow cases complete the requested target changes, with the preserv
 
 The release manifest records logical source paths from the research workspace, input/output asset hashes, the adapter hash, generation settings, and observations. Logical source names identify the files used in these runs; they do not establish original image ownership or dataset redistribution terms.
 
-The paired inputs were supplied from the authors' existing research examples, and the outputs were generated in the recorded runs. Complete upstream attribution and redistribution records for the underlying source images have not yet been assembled. These assets and model weights are therefore not represented as covered by the repository's Apache-2.0 code license. The paper figures under `docs/` remain separately attributed to the accompanying paper.
+The paired inputs were supplied from the authors' existing research examples, and the outputs were generated in the recorded runs. Complete upstream attribution and redistribution records for the underlying source images have not yet been assembled. These image assets are not represented as covered by the repository's Apache-2.0 code license. The released Siphon adapter weights are separately licensed under [Apache-2.0](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA/blob/main/LICENSE); see [WEIGHTS.md](../WEIGHTS.md) for their identity and download commands. The paper figures under `docs/` remain separately attributed to the accompanying paper.

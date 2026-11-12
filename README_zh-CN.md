@@ -22,12 +22,12 @@ Siphon 让编辑模型直接读取画在图像中的简短文字、箭头和框�
 - [x] 基于 LongCat-Image-Edit 的推理入口
 - [x] 四类视觉指令各两组，共八组精选输入/输出示例
 - [x] 单卡配对数据 LoRA 训练参考实现与两阶段配置
-- [ ] Siphon LoRA 权重的公开下载
+- [x] Siphon LoRA 权重的公开下载
 - [ ] 数据集和完整数据合成流程
 
-当前版本包含推理、演示样例和配对数据训练参考实现。选定的发布权重是生成示例图的 `10000` checkpoint；其 Hugging Face 公开下载仍待完成，目前需要已有的本地 PEFT adapter，或可访问的 adapter 仓库。基座模型直接生成的结果应标为 LongCat baseline，不能称为 Siphon 结果。
+当前版本包含推理、演示样例和配对数据训练参考实现。生成示例图的 `10000` adapter 已在 [Hugging Face](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA) 公开，权重采用 Apache-2.0 许可。基座模型直接生成的结果应标为 LongCat baseline，不能称为 Siphon 结果。
 
-最小权重包导出及 Hub 上传工具见 [WEIGHTS.md](WEIGHTS.md)，checkpoint 身份与已观察到的限制见 [10000 模型卡](model_cards/longcat-10000.md)。
+权重下载、最小包导出及 Hub 上传工具见 [WEIGHTS.md](WEIGHTS.md)，checkpoint 身份与已观察到的限制见 [已发布的模型卡](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA)。
 
 ### 安装与单图推理
 
@@ -46,7 +46,7 @@ python -m pip install -e .
 ```bash
 python -m siphon.inference \
   --base-model meituan-longcat/LongCat-Image-Edit \
-  --lora /path/to/siphon-adapter \
+  --lora huangwenjun1994/Siphon-LongCat-LoRA \
   --input examples/inputs/box_double_bass.png \
   --task box_edit \
   --output outputs/single_box_double_bass.png
@@ -71,7 +71,7 @@ python -m siphon.inference \
 
 ```bash
 python -m siphon.inference \
-  --lora /path/to/siphon-adapter \
+  --lora huangwenjun1994/Siphon-LongCat-LoRA \
   --examples examples/examples.json \
   --output-dir outputs
 ```
@@ -80,7 +80,7 @@ python -m siphon.inference \
 
 ```bash
 python -m siphon.inference \
-  --lora /path/to/siphon-adapter \
+  --lora huangwenjun1994/Siphon-LongCat-LoRA \
   --examples examples/examples.json \
   --case arrow_pink_flower --case box_double_bass \
   --output-dir outputs
@@ -112,7 +112,7 @@ python -m siphon.train --config configs/stage1.json
 
 `examples/` 中的图片来自本次代码整理阶段的实际生成，`docs/` 中继续保留论文原图及原项目主页内容，两者分别记录。
 
-代码使用 [Apache 2.0 许可](LICENSE)。论文、论文图片、示例图片和模型权重不自动归入代码许可。示例的部分原始图像归属和再分发记录尚待补充；具体来源记录见 [示例说明](examples/README.md#provenance) 和 [第三方说明](THIRD_PARTY_NOTICES.md)。
+代码使用 [Apache 2.0 许可](LICENSE)。已发布的 Siphon adapter 权重单独采用 [Apache-2.0 许可](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA/blob/main/LICENSE)。论文、论文图片、示例图片和基座模型权重保留各自条款。示例的部分原始图像归属和再分发记录尚待补充；具体来源记录见 [示例说明](examples/README.md#provenance) 和 [第三方说明](THIRD_PARTY_NOTICES.md)。
 
 ### 验证
 

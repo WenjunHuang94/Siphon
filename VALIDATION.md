@@ -27,7 +27,19 @@ On the same A100 and software stack:
 3. Resumed from the first checkpoint, including optimizer, scheduler, random states, and data cursor, and completed the second update. The reported final loss matched the continuous run. This checks resume continuity; GPU kernels did not produce bit-identical exported weights.
 4. Loaded the resumed adapter through `siphon.inference` and generated `box_double_bass` with 8 steps. It produced a valid 1040 × 1024 PNG with a double bass and removed the marks. Total runtime was approximately 50.5 seconds, including approximately 10.1 seconds for model loading. The short run was visibly less refined than the recorded 50-step example.
 
-These tiny runs use the release examples only to exercise the code. They do not train a new useful editor, validate generalization, or recreate the historical two-stage training. The original `10000` tensors were unchanged, and the smoke-test adapters are not part of the model release. The selected adapter was also exported to a minimal Hub package and checked against its recorded SHA256; no public Hub upload was performed without authentication.
+These tiny runs use the release examples only to exercise the code. They do not train a new useful editor, validate generalization, or recreate the historical two-stage training. The original `10000` tensors were unchanged, and the smoke-test adapters are not part of the model release.
+
+## Published adapter check
+
+The selected adapter was published under Apache-2.0 at [huangwenjun1994/Siphon-LongCat-LoRA](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA), revision `3eebc6f1c1a37fd390d90f6b354b4821186f71a1`. The package contains the standard adapter tensor/config, model card, license, checksums, and release metadata. Optimizer states, full-base weights, and the smoke-test adapters are excluded.
+
+The public model API was checked without authentication. Both the config and tensor file were then freshly downloaded with `token=False`. The downloaded tensor was 188,794,136 bytes and matched the original `10000` SHA256:
+
+```text
+0ed9694868d2552d243140caf242ef38e0d69f6673a3eec36e4ddc53ed459535
+```
+
+With implicit authentication disabled, the inference CLI then loaded `--lora huangwenjun1994/Siphon-LongCat-LoRA` using the anonymous download cache and the recorded local base snapshot. An 8-step `box_double_bass` run completed on the A100: approximately 16.2 seconds for loading and 54.9 seconds total, producing a valid 1040 × 1024 PNG. Visual inspection confirmed a double bass and removal of the box/text. This was a loading and generation smoke test; the gallery retains its original 50-step outputs. A transient adapter-config lookup failure on the first attempt was resolved by fetching the public config before retrying.
 
 ## Repeat the checks
 

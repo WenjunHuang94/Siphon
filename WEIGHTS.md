@@ -6,7 +6,30 @@ Only `stage2-final-0225/checkpoints-10000` is selected for this release. Its ten
 0ed9694868d2552d243140caf242ef38e0d69f6673a3eec36e4ddc53ed459535
 ```
 
-The adapter is about 180 MiB. GitHub hosts the code and small demonstrations; the intended model host is Hugging Face. The model owner has selected Apache-2.0 for these weights and `huangwenjun1994/Siphon-LongCat-LoRA` as the target repository. Public upload is pending Hub authentication; this repository ID is not yet an available download.
+The adapter is 188,794,136 bytes (about 180 MiB). GitHub hosts the code and small demonstrations; the adapter is publicly available at [huangwenjun1994/Siphon-LongCat-LoRA](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA). The model owner has separately licensed these weights under [Apache-2.0](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA/blob/main/LICENSE).
+
+## Download and use
+
+Pass the public repository ID directly to the inference command:
+
+```bash
+python -m siphon.inference \
+  --base-model meituan-longcat/LongCat-Image-Edit \
+  --revision 7b54ef423aa7854be7861600024be5c56ab7875a \
+  --lora huangwenjun1994/Siphon-LongCat-LoRA \
+  --examples examples/examples.json --case box_double_bass \
+  --output-dir outputs/box_example
+```
+
+To keep a local copy, download the published adapter revision with the Hugging Face CLI:
+
+```bash
+hf download huangwenjun1994/Siphon-LongCat-LoRA \
+  --revision 3eebc6f1c1a37fd390d90f6b354b4821186f71a1 \
+  --local-dir weights/siphon-10000
+```
+
+Then use `--lora weights/siphon-10000`. This is a LoRA adapter; the LongCat-Image-Edit base model is also required. For offline inference, download the base separately, pass both local directories, and add `--local-files-only`. The inference command's `--revision` selects the base model; the download command above pins the adapter revision.
 
 ## Prepare the minimal package
 
@@ -37,4 +60,4 @@ python tools/upload_adapter.py \
   --upload
 ```
 
-For a separate release, use your own authenticated account or an authorized organization. `--upload` is the only mode that contacts the Hub, creates the model repository if necessary, and uploads the allowlisted adapter files. After upload, put the verified model URL in the main README and check inference with that repository ID.
+For a separate release, use your own authenticated account or an authorized organization. `--upload` is the only mode that contacts the Hub, creates the model repository if necessary, and uploads the allowlisted adapter files.

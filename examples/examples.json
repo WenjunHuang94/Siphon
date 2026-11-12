@@ -12,7 +12,11 @@
     "adapter": {
       "name": "stage2-final-0225/checkpoints-10000",
       "sha256": "0ed9694868d2552d243140caf242ef38e0d69f6673a3eec36e4ddc53ed459535",
-      "availability": "Not yet publicly published; supply your own copy of this PEFT adapter."
+      "availability": "Publicly available on Hugging Face.",
+      "repo_id": "huangwenjun1994/Siphon-LongCat-LoRA",
+      "revision": "3eebc6f1c1a37fd390d90f6b354b4821186f71a1",
+      "license": "apache-2.0",
+      "url": "https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA"
     },
     "diffusers_commit": "e39aecff57ed14d1018529c3de6ec3c34fadb559",
     "recorded_environment": {

@@ -28,12 +28,12 @@ The project page includes interactive input/output comparisons and the original 
 - [x] LongCat-based inference entry point
 - [x] Eight curated input/output examples covering four instruction types
 - [x] Single-GPU paired-data LoRA training reference and two-stage configurations
-- [ ] Public Siphon LoRA checkpoint download
+- [x] Public Siphon LoRA checkpoint download
 - [ ] Dataset and complete data synthesis pipeline
 
-This release includes inference, recorded examples, and a paired-data training reference. The selected release adapter is the `10000` checkpoint used for the gallery. Its public Hugging Face download is pending; for now supply an existing local PEFT adapter directory or an accessible adapter repository. Do not substitute the base editor for the adapted model when reporting Siphon results.
+This release includes inference, recorded examples, and a paired-data training reference. The `10000` adapter used for the gallery is available on [Hugging Face](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA) under Apache-2.0. Do not substitute the base editor for the adapted model when reporting Siphon results.
 
-See [WEIGHTS.md](WEIGHTS.md) for the minimal adapter export and authenticated Hub upload tool, and the [10000 model card](model_cards/longcat-10000.md) for the checkpoint identity and observed limitations.
+See [WEIGHTS.md](WEIGHTS.md) for download, minimal adapter export, and authenticated Hub upload, and the [published model card](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA) for the checkpoint identity and observed limitations.
 
 ### Inference
 
@@ -47,12 +47,12 @@ python -m pip install -e .
 
 The package pins the Diffusers implementation to a recorded Git commit. Its installation needs access to GitHub and the Python package index. Inference loads LongCat-Image-Edit and a standard PEFT adapter containing `adapter_config.json` and `adapter_model.safetensors`; an external planner, API key, and the original training repository are not required.
 
-Run one box-guided example with your adapter:
+Run one box-guided example with the released adapter:
 
 ```bash
 python -m siphon.inference \
   --base-model meituan-longcat/LongCat-Image-Edit \
-  --lora /path/to/siphon-adapter \
+  --lora huangwenjun1994/Siphon-LongCat-LoRA \
   --input examples/inputs/box_double_bass.png \
   --task box_edit \
   --output outputs/single_box_double_bass.png
@@ -71,12 +71,12 @@ Run all eight examples, or select particular cases:
 
 ```bash
 python -m siphon.inference \
-  --lora /path/to/siphon-adapter \
+  --lora huangwenjun1994/Siphon-LongCat-LoRA \
   --examples examples/examples.json \
   --output-dir outputs
 
 python -m siphon.inference \
-  --lora /path/to/siphon-adapter \
+  --lora huangwenjun1994/Siphon-LongCat-LoRA \
   --examples examples/examples.json \
   --case arrow_pink_flower --case box_double_bass \
   --output-dir outputs
@@ -116,7 +116,7 @@ Run the CPU checks with `python -m unittest discover -s tests -v`. The CLI compl
 
 ### Code and asset attribution
 
-Code is provided under [Apache License 2.0](LICENSE). The paper, paper figures, example images, and model weights are not automatically included in that code license. See [third-party notices](THIRD_PARTY_NOTICES.md) and the [example provenance notes](examples/README.md#provenance) for the recorded sources and the current gaps in image-source attribution.
+Code is provided under [Apache License 2.0](LICENSE). The released Siphon adapter weights are separately licensed under [Apache-2.0](https://huggingface.co/huangwenjun1994/Siphon-LongCat-LoRA/blob/main/LICENSE). The paper, paper figures, example images, and base-model weights retain their own terms. See [third-party notices](THIRD_PARTY_NOTICES.md) and the [example provenance notes](examples/README.md#provenance) for the recorded sources and the current gaps in image-source attribution.
 
 ### Citation
 
